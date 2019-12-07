@@ -48,3 +48,10 @@ class DFA(Observable):
 			self.selected_state.point.y = my
 
 		self.notify_observers()
+
+	def update_selected_state_value(self, val):
+
+		if self.selected_state:
+			self.selected_state.update_value(val)
+
+		self.notify_observers()

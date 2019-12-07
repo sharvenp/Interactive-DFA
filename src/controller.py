@@ -26,6 +26,12 @@ class Controller:
 			state = State(point)
 			self.dfa.add_state(state)
 
+		elif keys[pg.K_UP]: # Increment State value
+			self.dfa.update_selected_state_value(1)
+
+		elif keys[pg.K_DOWN]: # Decrement State value
+			self.dfa.update_selected_state_value(-1)
+
 
 	def _select_state(self, mouse):
 

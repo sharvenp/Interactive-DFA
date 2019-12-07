@@ -11,11 +11,9 @@ class State:
 	def toggle_accepting(self):
 		self.is_accepting = not self.is_accepting
 
-	def increment_value(self):
-		self.value += 1
-
-	def decrement_value(self):
-		self.value -= 1 * int(self.value <= 0)
+	def update_value(self, val):
+		self.value += val
+		self.value = max(self.value, 0)
 
 	def set_incoming_edges(self, incoming_edges):
 
