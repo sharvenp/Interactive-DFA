@@ -1,0 +1,28 @@
+
+✔ Create GUI application screen @done (19-12-06 23:04)
+
+☐ Implement State creation:
+
+    ☐ Press s key, place create state at mouse position and add it to the DFA. Default label is "q0"
+    ☐ Click on a state to select it
+    ☐ Click and drag a state to move it around
+    ☐ Select a state and press UP/DOWN to increase/decrease its index
+
+☐ Implement Edge creation:
+    
+    ☐ Select a state and then symbol-click another state to draw and edge to it labelled with the pressed symbol. Modify the DFA appropriately
+    ☐ Select an edge
+    ☐ Select an edge and bend it up or down by moving mouse up or down
+    ☐ Select an edge and press a symbol to re-label it to the pressed symbol
+    ☐ Select and edge and press delete to delete it
+
+ ☐ Implement parse tracing
+
+     ☐ Implement text field
+     ☐ Input a string and display the state activations of the string
+
+ ☐ Save/Load
+
+     ☐ Save a dfa
+     ☐ Load a dfa
+
