@@ -32,6 +32,9 @@ class Controller:
 		elif keys[pg.K_DOWN]: # Decrement State value
 			self.dfa.update_selected_state_value(-1)
 
+		elif keys[pg.K_a]: # Toggle accepting
+			self.dfa.toggle_accepting()
+
 
 	def _select_state(self, mouse):
 

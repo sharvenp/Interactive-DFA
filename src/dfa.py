@@ -55,3 +55,10 @@ class DFA(Observable):
 			self.selected_state.update_value(val)
 
 		self.notify_observers()
+
+	def toggle_accepting(self):
+
+		if self.selected_state:
+			self.selected_state.toggle_accepting()
+
+		self.notify_observers()
