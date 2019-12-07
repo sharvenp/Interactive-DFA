@@ -35,7 +35,7 @@ class View(Observer):
 				color = Settings.ACCEPTING_COLOR
 
 			# Change color if it is selected
-			if state.is_selected:
+			if state == dfa.selected_state:
 				color = Settings.SELECTED_COLOR
 
 			# Draw circle

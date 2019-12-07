@@ -7,7 +7,6 @@ class State:
 		self.value = 0
 
 		self.is_accepting = False
-		self.is_selected = False
 
 	def toggle_accepting(self):
 		self.is_accepting = not self.is_accepting

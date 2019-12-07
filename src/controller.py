@@ -8,6 +8,10 @@ import math as m
 
 class Controller:
 
+	def __init__(self):
+
+		self.drag = False
+
 	def set_model(self, dfa):
 		self.dfa = dfa
 
@@ -23,24 +27,14 @@ class Controller:
 			self.dfa.add_state(state)
 
 
-	def _handle_mouse_input(self, mouse):
+	def _select_state(self, mouse):
 
 		mx, my = mouse.get_pos()
+		self.dfa.select_state(mx, my)
 
-		selected_state = None
-
-		# Find the clicked state
-		for state in self.dfa.states:
-
-			sx, sy = state.point.x, state.point.y
-			distance = m.sqrt(((mx - sx)**2) + ((my - sy)**2))
-
-			if distance <= Settings.STATE_RADIUS:
-				selected_state = state
-				break
-
-		self.dfa.select_state(selected_state)
-
+	def _move_selected_state(self, mouse):
+		mx, my = mouse.get_pos()
+		self.dfa.update_selected_state_point(mx, my)
 
 	def handle(self, e, key, mouse):
 
@@ -55,5 +49,13 @@ class Controller:
 		
 		elif e.type == pg.MOUSEBUTTONDOWN:
 
-			self._handle_mouse_input(mouse)
+			self._select_state(mouse)
+			self.drag = True
 
+		elif e.type == pg.MOUSEMOTION and self.drag:
+
+			self._move_selected_state(mouse)
+
+		elif e.type == pg.MOUSEBUTTONUP:
+
+			self.drag = False
