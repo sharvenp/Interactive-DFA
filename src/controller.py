@@ -2,6 +2,9 @@
 import pygame as pg
 from point import Point
 from state import State
+from settings import Settings
+
+import math as m
 
 class Controller:
 
@@ -20,9 +23,23 @@ class Controller:
 			self.dfa.add_state(state)
 
 
-	def _handle_mouse_input(self):
+	def _handle_mouse_input(self, mouse):
 
-		pass
+		mx, my = mouse.get_pos()
+
+		selected_state = None
+
+		# Find the clicked state
+		for state in self.dfa.states:
+
+			sx, sy = state.point.x, state.point.y
+			distance = m.sqrt(((mx - sx)**2) + ((my - sy)**2))
+
+			if distance <= Settings.STATE_RADIUS:
+				selected_state = state
+				break
+
+		self.dfa.select_state(selected_state)
 
 
 	def handle(self, e, key, mouse):
@@ -39,5 +56,4 @@ class Controller:
 		elif e.type == pg.MOUSEBUTTONDOWN:
 
 			self._handle_mouse_input(mouse)
-			self._render_DFA()
 

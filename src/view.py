@@ -4,6 +4,8 @@ from dfa import DFA
 from edge import Edge
 from point import Point
 from observer import Observer
+from settings import Settings
+
 
 import pygame as pg
 
@@ -13,53 +15,36 @@ class View(Observer):
 
 		pg.init()
 
-		self.dimensions = 700
-
-		# Color Pallete
-		self.BACKGROUND_COLOR = (0, 0, 0)
-		self.STATE_COLOR = (255, 255, 255)
-		self.SELECTED_COLOR = (255, 180, 180)
-		self.ACCEPTING_COLOR = (180, 255, 180)
-		self.EDGE_COLOR = (255, 255, 255)
-		self.TEXT_COLOR = (255, 255, 255)
-
-		# Fonts
-		self.DFA_FONT = pg.font.SysFont('Consolas', 25)
-
-		# State Parameters
-		self.STATE_RADIUS = 40
-		self.STATE_DEFAULT_THICKNESS = 2
-		self.STATE_ACCEPTING_THICKNESS = 5
-
-		# Edge Parameters
-		self.EDGE_THICKNESS = 3
-
-		self.selected_state = None
-
-
 	def attach_controller(self, controller):
 		self.controller = controller
 
 	def _render_DFA(self, dfa):
 
-		self.screen.fill(self.BACKGROUND_COLOR)
+		self.screen.fill(Settings.BACKGROUND_COLOR)
 
 		for state in dfa.states:
 			
 			x, y = state.point.x, state.point.y
 
-			thickness = self.STATE_DEFAULT_THICKNESS
+			thickness = Settings.STATE_DEFAULT_THICKNESS
+			color = Settings.STATE_COLOR
 
 			# Change thickness base on accepting
 			if state.is_accepting:
-				thickness = self.STATE_ACCEPTING_THICKNESS
+				thickness = Settings.STATE_ACCEPTING_THICKNESS
+				color = Settings.ACCEPTING_COLOR
+
+			# Change color if it is selected
+			if state.is_selected:
+				color = Settings.SELECTED_COLOR
 
 			# Draw circle
-			pg.draw.circle(self.screen, self.STATE_COLOR, (x, y), self.STATE_RADIUS, thickness)
+			pg.draw.circle(self.screen, color, (x, y), Settings.STATE_RADIUS, thickness)
 
 			# Label circle
 			label_string = "q"+str(state.value)
-			label_surface = self.DFA_FONT.render(label_string, True, self.TEXT_COLOR)
+			font = pg.font.SysFont(Settings.DFA_FONT[0], Settings.DFA_FONT[1])
+			label_surface = font.render(label_string, True, color)
 			
 			# Center the text
 			label_rect = label_surface.get_rect(center=(x, y))
@@ -78,12 +63,12 @@ class View(Observer):
 
 	def launch(self):
 
-		self.screen = pg.display.set_mode((self.dimensions, self.dimensions))    
+		self.screen = pg.display.set_mode((Settings.dimensions, Settings.dimensions))    
 		pg.display.set_caption("Interactive DFA")
 
 		while True:
 
-			# Exit Condition
+			# Get all types of input and feed it into the controller
 			e = pg.event.poll()
 			key = pg.key
 			mouse = pg.mouse
