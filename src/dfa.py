@@ -94,16 +94,22 @@ class DFA(Observable):
 			# Check to make sure there are no duplicates
 			for i in range(len(self.transition_table)):
 				fr, s, to = self.transition_table[i]
-				if (self.selected_state, symbol, to_state) == self.transition_table[i]:
+				if self.selected_state == fr and to_state == to and symbol in s:
 					# Duplicate
+					s.pop(s.index(symbol))
+					if len(s) == 0:
+						self.transition_table.pop(i)
+					self.notify_observers()
 					return
-				elif self.selected_state == fr and to_state == to and symbol != s:
-					self.transition_table[i] = (fr, s+","+symbol, to)
+
+				elif self.selected_state == fr and to_state == to and symbol not in s:
+					s.append(symbol)
+					self.transition_table[i] = (fr, s, to)
 					self.notify_observers()
 					return
 
 			# New transition
-			self.transition_table.append((self.selected_state, symbol, to_state))
+			self.transition_table.append((self.selected_state, [symbol], to_state))
 
 		self.notify_observers()
 		

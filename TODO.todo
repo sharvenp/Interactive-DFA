@@ -16,7 +16,7 @@
     ☐ 2.11 Make the edge a proper arrow
     ☐ 2.2 Select an edge
     ☐ 2.3 Select an edge and bend it up or down by moving mouse up or down
-    ☐ 2.4 Select an edge and press a symbol to re-label it to the pressed symbol
+    ✔ 2.4 Select an edge and press a symbol to re-label it to the pressed symbol @done (19-12-09 14:03)
     ☐ 2.5 Select and edge and press delete to delete it
     ☐ 2.6 When deleting a State, delete edges appropriately.
 

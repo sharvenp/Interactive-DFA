@@ -23,6 +23,18 @@ class View(Observer):
 			return 1
 		else:
 			return -1
+	def _symbol_list_to_string(self, s):
+
+		out = ""
+
+		for i in range(len(s)):
+
+			if i == len(s) - 1:
+				out += s[i]
+			else:
+				out += s[i] + ","
+
+		return out
 
 	def _render_DFA(self, dfa):
 
@@ -30,8 +42,11 @@ class View(Observer):
 
 		# Draw Edges
 		for transition in dfa.transition_table:
-			fr, s, to = transition
-			
+			fr, symbol_list, to = transition
+
+			symbol_list.sort()
+				
+			s = self._symbol_list_to_string(symbol_list)
 			x, y = fr.point.x, fr.point.y
 			tx, ty = to.point.x, to.point.y
 
@@ -40,6 +55,12 @@ class View(Observer):
 				pg.draw.arc(self.screen, Settings.EDGE_COLOR, \
 							(x - Settings.STATE_RADIUS//2, y - Settings.EDGE_DEFAULT_BEND//2, Settings.STATE_RADIUS, Settings.EDGE_DEFAULT_BEND), \
 							0, m.pi, Settings.EDGE_THICKNESS)
+
+				font = pg.font.SysFont(Settings.SYMBOL_FONT[0], Settings.SYMBOL_FONT[1])
+				symbol_surface = font.render(s, True, Settings.STATE_COLOR)
+				symbol_rect = symbol_surface.get_rect(center=(x, y - (Settings.EDGE_DEFAULT_BEND//2 + 20)))
+				self.screen.blit(symbol_surface, symbol_rect)
+
 
 			else: # Transition to different state
 
@@ -101,11 +122,6 @@ class View(Observer):
 
 			# Draw label
 			self.screen.blit(label_surface, label_rect)
-
-
-	def _undo(self):
-		print("Undo Command")
-
 
 	def update(self, dfa):
 		self._render_DFA(dfa)

@@ -15,6 +15,11 @@ class Controller:
 	def set_model(self, dfa):
 		self.dfa = dfa
 
+	
+	def _undo(self):
+		print("Undo Command")
+
+
 	def _handle_keyboard_input(self, keys, mouse, e):
 		
 		if e.type == pg.KEYDOWN:
