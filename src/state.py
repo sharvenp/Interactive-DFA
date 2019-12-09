@@ -1,4 +1,6 @@
 
+from point import Point
+
 class State:
 
 	def __init__(self, point):
@@ -14,14 +16,6 @@ class State:
 	def update_value(self, val):
 		self.value += val
 		self.value = max(self.value, 0)
-
-	def set_incoming_edges(self, incoming_edges):
-
-		this.incoming_edges = incoming_edges
-
-	def set_outgoing_edges(self, outgoing_edges):
-
-		this.outgoing_edges = outgoing_edges
 
 	def __repr__(self):
 		# Example: q0*@(100,100)
