@@ -24,3 +24,5 @@ class Settings:
 	# Edge Parameters
 	EDGE_THICKNESS = 2
 	EDGE_DEFAULT_BEND = 180
+	ARROW_WIDTH = 10
+	ARROW_HEIGHT = 8

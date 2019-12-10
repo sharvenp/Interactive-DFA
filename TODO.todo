@@ -13,7 +13,7 @@
 ☐ 2.0 Implement Edge creation:
     
     ✔ 2.1 Select a state and then symbol-click another state to draw and edge to it labelled with the pressed symbol. Modify the DFA appropriately @done (19-12-09 13:39)
-    ☐ 2.11 Make the edge a proper arrow
+    ✔ 2.11 Make the edge a proper arrow @done (19-12-09 23:48)
     ☐ 2.2 Select an edge
     ☐ 2.3 Select an edge and bend it up or down by moving mouse up or down
     ✔ 2.4 Select an edge and press a symbol to re-label it to the pressed symbol @done (19-12-09 14:03)

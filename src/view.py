@@ -70,14 +70,21 @@ class View(Observer):
 
 				major_axis = distance
 				minor_axis = Settings.EDGE_DEFAULT_BEND
-				ellipse_surface = pg.Surface((major_axis, minor_axis), pg.SRCALPHA, 32)
+				ellipse_surface = pg.Surface((major_axis, minor_axis + 4*Settings.ARROW_HEIGHT), pg.SRCALPHA, 32)
 				ellipse_surface = ellipse_surface.convert_alpha()
 				
 				# Draw arc
-				pg.draw.arc(ellipse_surface, Settings.EDGE_COLOR, (0, 0, major_axis, minor_axis), m.pi, 2*m.pi, Settings.EDGE_THICKNESS)
+				pg.draw.arc(ellipse_surface, Settings.EDGE_COLOR, (0, 2*Settings.ARROW_HEIGHT, major_axis, minor_axis - 2*Settings.ARROW_HEIGHT), 0, m.pi, Settings.EDGE_THICKNESS)
 				
+				# Draw arrow
+				arrow_points = [(major_axis//2 - Settings.ARROW_WIDTH, Settings.ARROW_HEIGHT), 
+								(major_axis//2 + Settings.ARROW_WIDTH, 2*Settings.ARROW_HEIGHT),
+							    (major_axis//2 - Settings.ARROW_WIDTH, 3*Settings.ARROW_HEIGHT), 
+							    (major_axis//2 - Settings.ARROW_WIDTH, Settings.ARROW_HEIGHT)]
+				pg.draw.polygon(ellipse_surface, Settings.EDGE_COLOR, arrow_points)
+
 				# Rotate arc surface
-				rotation = -m.degrees(m.atan2(y - ty, x - tx))
+				rotation = -m.degrees(m.atan2(ty - y, tx - x))
 				ellipse_center = ellipse_surface.get_rect().center
 				rotated_ellipse = pg.transform.rotate(ellipse_surface, rotation)
 				rotated_rect = rotated_ellipse.get_rect(center=(mid_x, mid_y))
