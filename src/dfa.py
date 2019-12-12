@@ -74,11 +74,31 @@ class DFA(Observable):
 	def delete_selected_state(self):
 
 		i = self.states.index(self.selected_state)
+		
+		deleted_transitions = []
+		k = 0
+		while k < len(self.transition_table):
+
+			found_transition = False
+
+			fr, s, to = self.transition_table[k]
+			if fr == self.selected_state or to == self.selected_state:
+				found_transition = True
+				deleted_transitions.append(self.transition_table.pop(k))
+				k = 0
+
+			k += 1 * int(not found_transition)
+
 
 		self.selected_state = None
-
+		
+		# Remove selected state from states
 		removed_state = self.states.pop(i)
 		del removed_state
+
+		# Remove all transitions in the transition table involving the selected state
+		deleted_transitions.clear()
+		del deleted_transitions[:]
 
 		self.states = sorted(self.states, key=lambda s: s.value)
 		self.start_state = self.states[0]

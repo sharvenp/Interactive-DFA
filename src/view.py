@@ -52,9 +52,17 @@ class View(Observer):
 
 			if fr == to: # Transition to same state
 
+				# Draw arc
 				pg.draw.arc(self.screen, Settings.EDGE_COLOR, \
 							(x - Settings.STATE_RADIUS//2, y - Settings.EDGE_DEFAULT_BEND//2, Settings.STATE_RADIUS, Settings.EDGE_DEFAULT_BEND), \
 							0, m.pi, Settings.EDGE_THICKNESS)
+
+				# Draw arrow
+				arrow_points = [(x - Settings.ARROW_WIDTH//2, y - 15 - (Settings.EDGE_DEFAULT_BEND//2) + Settings.ARROW_HEIGHT), 
+								(x + Settings.ARROW_WIDTH//2, y - 15 - (Settings.EDGE_DEFAULT_BEND//2) + 2*Settings.ARROW_HEIGHT),
+							    (x - Settings.ARROW_WIDTH//2, y - 15 - (Settings.EDGE_DEFAULT_BEND//2) + 3*Settings.ARROW_HEIGHT), 
+							    (x - Settings.ARROW_WIDTH//2, y - 15 - (Settings.EDGE_DEFAULT_BEND//2) + Settings.ARROW_HEIGHT)]
+				pg.draw.polygon(self.screen, Settings.EDGE_COLOR, arrow_points)
 
 				font = pg.font.SysFont(Settings.SYMBOL_FONT[0], Settings.SYMBOL_FONT[1])
 				symbol_surface = font.render(s, True, Settings.STATE_COLOR)
@@ -104,12 +112,7 @@ class View(Observer):
 			
 			x, y = state.point.x, state.point.y
 
-			thickness = Settings.STATE_DEFAULT_THICKNESS
 			color = Settings.STATE_COLOR
-
-			# Change thickness base on accepting
-			if state.is_accepting:
-				thickness = Settings.STATE_ACCEPTING_THICKNESS
 
 			# Change color if it is selected
 			if state == dfa.selected_state:
@@ -117,7 +120,11 @@ class View(Observer):
 
 			# Draw circle
 			pg.draw.circle(self.screen, color, (x, y), Settings.STATE_RADIUS)
-			pg.draw.circle(self.screen, Settings.BACKGROUND_COLOR, (x, y), Settings.STATE_RADIUS - thickness)
+			pg.draw.circle(self.screen, Settings.BACKGROUND_COLOR, (x, y), Settings.STATE_RADIUS - Settings.STATE_THICKNESS)
+
+			# Draw inner circle if accepting
+			if state.is_accepting:
+				pg.draw.circle(self.screen, color, (x, y), Settings.STATE_ACCEPTING_INNER_RADIUS, Settings.STATE_THICKNESS)
 
 			# Label circle
 			label_string = "q"+str(state.value)
