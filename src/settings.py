@@ -3,7 +3,8 @@ import pygame as pg
 
 class Settings:
 
-	dimensions = 700
+	WINDOW_DIMENSION = 800
+	DIVISION_HEIGHT = 100
 
 	# Color Pallete
 	BACKGROUND_COLOR = (0, 0, 0)
@@ -14,7 +15,7 @@ class Settings:
 	# Fonts
 	DFA_FONT = ('Consolas', 22)
 	SYMBOL_FONT = ('Consolas', 19)
-
+	INPUT_FONT = ('Consolas', 20)
 
 	# State Parameters
 	STATE_RADIUS = 40

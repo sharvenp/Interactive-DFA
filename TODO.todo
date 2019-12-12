@@ -22,11 +22,13 @@
 
  ☐ 3.0 Implement parse tracing
 
-     ☐ 3.1 Implement text field
+     ✔ 3.1 Implement text field @done (19-12-12 18:52)
      ☐ 3.2 Input a string and display the state activations of the string
 
  ☐ 4.0 Save/Load
 
      ☐ 4.1 Save a dfa
      ☐ 4.2 Load a dfa
+
+ ☐ 5.0 Implement Undo functionality
 

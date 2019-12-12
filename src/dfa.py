@@ -16,6 +16,8 @@ class DFA(Observable):
 		self.start_state = None
 		self.selected_state = None
 
+		self.parsed_string = ''
+
 	def add_state(self, state):
 		self.states.append(state)
 		
@@ -152,3 +154,6 @@ class DFA(Observable):
 
 		self.notify_observers()
 		
+	def parse_string(self, string):
+
+		self.parsed_string = string

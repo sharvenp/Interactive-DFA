@@ -143,14 +143,25 @@ class View(Observer):
 			# Draw label
 			self.screen.blit(label_surface, label_rect)
 
+		# Draw Division line
+		pg.draw.line(self.screen, Settings.STATE_COLOR, (0, Settings.WINDOW_DIMENSION - Settings.DIVISION_HEIGHT), \
+					(Settings.WINDOW_DIMENSION, Settings.WINDOW_DIMENSION - Settings.DIVISION_HEIGHT))
+
+
+
 	def update(self, dfa):
 		self._render_DFA(dfa)
 		pg.display.update()
 
 	def launch(self):
 
-		self.screen = pg.display.set_mode((Settings.dimensions, Settings.dimensions))    
+		self.screen = pg.display.set_mode((Settings.WINDOW_DIMENSION, Settings.WINDOW_DIMENSION))    
 		pg.display.set_caption("Interactive DFA")
+
+		# Draw Division line
+		pg.draw.line(self.screen, Settings.STATE_COLOR, (0, Settings.WINDOW_DIMENSION - Settings.DIVISION_HEIGHT), \
+					(Settings.WINDOW_DIMENSION, Settings.WINDOW_DIMENSION - Settings.DIVISION_HEIGHT))
+		pg.display.update()
 
 		while True:
 
