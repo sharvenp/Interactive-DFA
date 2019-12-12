@@ -72,40 +72,46 @@ class View(Observer):
 
 			else: # Transition to different state
 
-				mid_x = (tx + x) // 2
-				mid_y = (ty + y) // 2
-				distance = m.sqrt(((x - tx)**2) + ((y - ty)**2))
+				try:
 
-				major_axis = distance
-				minor_axis = Settings.EDGE_DEFAULT_BEND
-				ellipse_surface = pg.Surface((major_axis, minor_axis + 4*Settings.ARROW_HEIGHT), pg.SRCALPHA, 32)
-				ellipse_surface = ellipse_surface.convert_alpha()
-				
-				# Draw arc
-				pg.draw.arc(ellipse_surface, Settings.EDGE_COLOR, (0, 2*Settings.ARROW_HEIGHT, major_axis, minor_axis - 2*Settings.ARROW_HEIGHT), 0, m.pi, Settings.EDGE_THICKNESS)
-				
-				# Draw arrow
-				arrow_points = [(major_axis//2 - Settings.ARROW_WIDTH, Settings.ARROW_HEIGHT), 
-								(major_axis//2 + Settings.ARROW_WIDTH, 2*Settings.ARROW_HEIGHT),
-							    (major_axis//2 - Settings.ARROW_WIDTH, 3*Settings.ARROW_HEIGHT), 
-							    (major_axis//2 - Settings.ARROW_WIDTH, Settings.ARROW_HEIGHT)]
-				pg.draw.polygon(ellipse_surface, Settings.EDGE_COLOR, arrow_points)
+					mid_x = (tx + x) // 2
+					mid_y = (ty + y) // 2
+					distance = m.sqrt(((x - tx)**2) + ((y - ty)**2))
 
-				# Rotate arc surface
-				rotation = -m.degrees(m.atan2(ty - y, tx - x))
-				ellipse_center = ellipse_surface.get_rect().center
-				rotated_ellipse = pg.transform.rotate(ellipse_surface, rotation)
-				rotated_rect = rotated_ellipse.get_rect(center=(mid_x, mid_y))
+					major_axis = distance
+					minor_axis = Settings.EDGE_DEFAULT_BEND
+					ellipse_surface = pg.Surface((major_axis, minor_axis + 4*Settings.ARROW_HEIGHT), pg.SRCALPHA, 32)
+					ellipse_surface = ellipse_surface.convert_alpha()
+					
+					# Draw arc
+					pg.draw.arc(ellipse_surface, Settings.EDGE_COLOR, (0, 2*Settings.ARROW_HEIGHT, major_axis, minor_axis - 2*Settings.ARROW_HEIGHT), 0, m.pi, Settings.EDGE_THICKNESS)
+					
+					# Draw arrow
+					arrow_points = [(major_axis//2 - Settings.ARROW_WIDTH, Settings.ARROW_HEIGHT), 
+									(major_axis//2 + Settings.ARROW_WIDTH, 2*Settings.ARROW_HEIGHT),
+								    (major_axis//2 - Settings.ARROW_WIDTH, 3*Settings.ARROW_HEIGHT), 
+								    (major_axis//2 - Settings.ARROW_WIDTH, Settings.ARROW_HEIGHT)]
+					pg.draw.polygon(ellipse_surface, Settings.EDGE_COLOR, arrow_points)
 
-				# Apply arc surface to screen
-				self.screen.blit(rotated_ellipse, (rotated_rect.x, rotated_rect.y))
+					# Rotate arc surface
+					rotation = -m.degrees(m.atan2(ty - y, tx - x))
+					ellipse_center = ellipse_surface.get_rect().center
+					rotated_ellipse = pg.transform.rotate(ellipse_surface, rotation)
+					rotated_rect = rotated_ellipse.get_rect(center=(mid_x, mid_y))
 
-				# Draw label
-				font = pg.font.SysFont(Settings.SYMBOL_FONT[0], Settings.SYMBOL_FONT[1])
-				symbol_surface = font.render(s, True, Settings.STATE_COLOR)
-				symbol_rect = symbol_surface.get_rect(center=(mid_x, mid_y + self._get_sign(x - tx)*(minor_axis//2 + 20)))
-				self.screen.blit(symbol_surface, symbol_rect)
+					# Apply arc surface to screen
+					self.screen.blit(rotated_ellipse, (rotated_rect.x, rotated_rect.y))
 
+					# Draw label
+					font = pg.font.SysFont(Settings.SYMBOL_FONT[0], Settings.SYMBOL_FONT[1])
+					symbol_surface = font.render(s, True, Settings.STATE_COLOR)
+					symbol_rect = symbol_surface.get_rect(center=(mid_x, mid_y + self._get_sign(x - tx)*(minor_axis//2 + 20)))
+					self.screen.blit(symbol_surface, symbol_rect)
+
+				except:
+
+					print("Error!")
+					
 
 		# Draw States
 		for state in dfa.states:
