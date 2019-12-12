@@ -42,7 +42,7 @@ class View(Observer):
 
 		# Draw Edges
 		for transition in dfa.transition_table:
-			fr, symbol_list, to = transition
+			fr, symbol_list, to, bend = transition
 
 			symbol_list.sort()
 				
@@ -54,19 +54,19 @@ class View(Observer):
 
 				# Draw arc
 				pg.draw.arc(self.screen, Settings.EDGE_COLOR, \
-							(x - Settings.STATE_RADIUS//2, y - Settings.EDGE_DEFAULT_BEND//2, Settings.STATE_RADIUS, Settings.EDGE_DEFAULT_BEND), \
+							(x - Settings.STATE_RADIUS//2, y - 90, Settings.STATE_RADIUS, 180), \
 							0, m.pi, Settings.EDGE_THICKNESS)
 
 				# Draw arrow
-				arrow_points = [(x - Settings.ARROW_WIDTH//2, y - 15 - (Settings.EDGE_DEFAULT_BEND//2) + Settings.ARROW_HEIGHT), 
-								(x + Settings.ARROW_WIDTH//2, y - 15 - (Settings.EDGE_DEFAULT_BEND//2) + 2*Settings.ARROW_HEIGHT),
-							    (x - Settings.ARROW_WIDTH//2, y - 15 - (Settings.EDGE_DEFAULT_BEND//2) + 3*Settings.ARROW_HEIGHT), 
-							    (x - Settings.ARROW_WIDTH//2, y - 15 - (Settings.EDGE_DEFAULT_BEND//2) + Settings.ARROW_HEIGHT)]
+				arrow_points = [(x - Settings.ARROW_WIDTH//2, y - 105 + Settings.ARROW_HEIGHT), 
+								(x + Settings.ARROW_WIDTH//2, y - 105 + 2*Settings.ARROW_HEIGHT),
+							    (x - Settings.ARROW_WIDTH//2, y - 105 + 3*Settings.ARROW_HEIGHT), 
+							    (x - Settings.ARROW_WIDTH//2, y - 105 + Settings.ARROW_HEIGHT)]
 				pg.draw.polygon(self.screen, Settings.EDGE_COLOR, arrow_points)
 
 				font = pg.font.SysFont(Settings.SYMBOL_FONT[0], Settings.SYMBOL_FONT[1])
 				symbol_surface = font.render(s, True, Settings.STATE_COLOR)
-				symbol_rect = symbol_surface.get_rect(center=(x, y - (Settings.EDGE_DEFAULT_BEND//2 + 20)))
+				symbol_rect = symbol_surface.get_rect(center=(x, y - 110))
 				self.screen.blit(symbol_surface, symbol_rect)
 
 
@@ -79,7 +79,7 @@ class View(Observer):
 					distance = m.sqrt(((x - tx)**2) + ((y - ty)**2))
 
 					major_axis = distance
-					minor_axis = Settings.EDGE_DEFAULT_BEND
+					minor_axis = bend
 					ellipse_surface = pg.Surface((major_axis, minor_axis + 4*Settings.ARROW_HEIGHT), pg.SRCALPHA, 32)
 					ellipse_surface = ellipse_surface.convert_alpha()
 					
@@ -111,7 +111,7 @@ class View(Observer):
 				except:
 
 					print("Error!")
-					
+
 
 		# Draw States
 		for state in dfa.states:

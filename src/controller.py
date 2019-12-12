@@ -48,21 +48,24 @@ class Controller:
 
 	def _handle_mouse_input(self, mouse, e):
 
-		buttons = mouse.get_pressed()	
-
 		if e.type == pg.MOUSEBUTTONDOWN:
 
-			if buttons[0]: # Select State
+			mx, my = mouse.get_pos()
+
+			if e.button == 1: # Select State
 				self._select_state(mouse)
-			elif buttons[2]: # Create State
-				mx, my = mouse.get_pos()
+			elif e.button == 3: # Create State
 				point = Point(mx, my)
 				state = State(point)
 				self.dfa.add_state(state)
+			elif e.button == 4: # Increase Edge Bend
+				self.dfa.update_bend(mx, my, 1)
+			elif e.button == 5: # Decrease Edge Bend
+				self.dfa.update_bend(mx, my, -1)
 
 			self.drag = True
 
-		elif e.type == pg.MOUSEMOTION and self.drag and buttons[0]:
+		elif e.type == pg.MOUSEMOTION and self.drag and mouse.get_pressed()[0]:
 
 			self._move_selected_state(mouse)
 

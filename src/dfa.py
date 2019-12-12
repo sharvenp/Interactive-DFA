@@ -81,7 +81,7 @@ class DFA(Observable):
 
 			found_transition = False
 
-			fr, s, to = self.transition_table[k]
+			fr, s, to, bend = self.transition_table[k]
 			if fr == self.selected_state or to == self.selected_state:
 				found_transition = True
 				deleted_transitions.append(self.transition_table.pop(k))
@@ -113,7 +113,7 @@ class DFA(Observable):
 			
 			# Check to make sure there are no duplicates
 			for i in range(len(self.transition_table)):
-				fr, s, to = self.transition_table[i]
+				fr, s, to, bend = self.transition_table[i]
 				if self.selected_state == fr and to_state == to and symbol in s:
 					# Duplicate
 					s.pop(s.index(symbol))
@@ -124,12 +124,31 @@ class DFA(Observable):
 
 				elif self.selected_state == fr and to_state == to and symbol not in s:
 					s.append(symbol)
-					self.transition_table[i] = (fr, s, to)
+					self.transition_table[i] = (fr, s, to, bend)
 					self.notify_observers()
 					return
 
 			# New transition
-			self.transition_table.append((self.selected_state, [symbol], to_state))
+			self.transition_table.append((self.selected_state, [symbol], to_state, Settings.EDGE_DEFAULT_BEND))
+
+		self.notify_observers()
+
+	def update_bend(self, mx, my, sign):
+
+		delta = sign * Settings.BEND_DELTA
+
+		to_state = self._get_state(mx, my)
+
+		for i in range(len(self.transition_table)):
+
+			fr, s, to, bend = self.transition_table[i]
+
+			if self.selected_state == fr and to == to_state:
+
+				bend += delta
+				bend = max(Settings.EDGE_DEFAULT_BEND, bend)
+
+				self.transition_table[i] = (fr, s, to, bend)
 
 		self.notify_observers()
 		
