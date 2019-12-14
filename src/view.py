@@ -113,6 +113,16 @@ class View(Observer):
 					print("Error!")
 
 
+		# Draw start state arrow
+		if dfa.start_state:
+			sx, sy = dfa.start_state.point.x, dfa.start_state.point.y 	
+			pg.draw.line(self.screen, Settings.EDGE_COLOR, (sx - Settings.START_ARROW_LENGTH - Settings.STATE_RADIUS, sy), (sx, sy), Settings.EDGE_THICKNESS)
+			arrow_points = [(sx - Settings.STATE_RADIUS, sy), 
+							(sx - Settings.STATE_RADIUS - Settings.ARROW_WIDTH, sy - Settings.ARROW_HEIGHT),
+						    (sx - Settings.STATE_RADIUS - Settings.ARROW_WIDTH, sy + Settings.ARROW_HEIGHT), 
+						    (sx - Settings.STATE_RADIUS, sy)]
+			pg.draw.polygon(self.screen, Settings.EDGE_COLOR, arrow_points)
+
 		# Draw States
 		for state in dfa.states:
 			

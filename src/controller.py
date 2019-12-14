@@ -5,9 +5,15 @@ from state import State
 from settings import Settings
 
 import math as m
+from tkinter import messagebox
 from tkinter import *
 
 class Controller:
+
+	"""
+	
+	
+	"""
 
 	def __init__(self):
 
@@ -20,27 +26,49 @@ class Controller:
 	def _undo(self):
 		print("Undo Command")
 
-	def create_text_window(self):
+	def _save(self):
+		print("Save Command")
+
+	def _load(self):
+		print("Load Command")
+
+	def get_string_from_user(self):
 
 		self.string = ""
 
-		master = Tk()
-		e = Entry(master, width=80)
-		e.pack()
+		if self.dfa.check_valid():
 
-		e.focus_set()
+			master = Tk()
+			master.title("Input String")
+			e = Entry(master, width=80)
+			e.pack()
 
-		def parse_on_action(m=master):
-		    self.string = e.get()
-		    master.destroy()
+			e.focus_set()
 
-		b1 = Button(master, text = "Parse", width = 20, command=parse_on_action)
-		b1.pack()
+			def alarm(self, e=e):
+				e.focus_force()
+				e.bell()
 
-		b2 = Button(master, text = "Cancel", width = 20, command=master.destroy)
-		b2.pack()
+			e.bind("<FocusOut>", alarm)	
 
-		mainloop()
+			def parse_on_action(m=master):
+			    self.string = e.get()	
+			    master.destroy()
+
+			b1 = Button(master, text = "Parse", width = 20, command=parse_on_action)
+			b1.pack()
+
+			b2 = Button(master, text = "Cancel", width = 20, command=master.destroy)
+			b2.pack()
+
+			mainloop()
+
+		else:
+
+			root = Tk()
+			root.withdraw()
+			messagebox.showerror("Invalid DFA", "The drawn DFA is not valid.\nTroubleshooting:\n-Check")
+
 
 	def _handle_keyboard_input(self, keys, mouse, e):
 		
@@ -49,24 +77,40 @@ class Controller:
 			if keys[pg.K_ESCAPE]: # Quit
 				quit(0)
 
-			elif keys[pg.K_BACKSPACE]: # Undo last command
-				self._undo()
 
-			elif keys[pg.K_UP]: # Increment State value
+			if keys[pg.K_LCTRL] or keys[pg.K_RCTRL]: # Ctrl key pressed
+
+				if keys[Settings.KEY_EXIT]:
+					quit(0)
+
+				elif keys[Settings.KEY_ACCEPTING]: # Toggle accepting
+					self.dfa.toggle_accepting()
+
+				elif keys[Settings.KEY_SET_START]: # Set start state
+					self.dfa.set_start()
+
+				elif keys[Settings.KEY_UNDO]: # Undo last command
+					self._undo()
+
+				elif keys[Settings.KEY_SAVE]: # Save dfa
+					self._save()
+
+				elif keys[Settings.KEY_LOAD]: # Load dfa
+					self._load()
+
+				elif keys[Settings.KEY_INPUT_STRING]: # Open input box
+					self.get_string_from_user()
+					self.dfa.parse_string(self.string)
+
+
+			if keys[pg.K_UP]: # Increment State value
 				self.dfa.update_selected_state_value(1)
 
 			elif keys[pg.K_DOWN]: # Decrement State value
 				self.dfa.update_selected_state_value(-1)
 
-			elif keys[pg.K_SPACE]: # Toggle accepting
-				self.dfa.toggle_accepting()
-
 			elif keys[pg.K_DELETE]: # Delete object
 				self.dfa.delete_selected_state()
-
-			elif keys[pg.K_LSHIFT]: # Open input box
-				self.create_text_window()
-				self.dfa.parse_string(self.string)
 
 			else: # Symbol click
 				if e.unicode: # Create Edge
@@ -77,15 +121,15 @@ class Controller:
 
 	def _handle_mouse_input(self, mouse, e):
 
-		if e.type == pg.MOUSEBUTTONDOWN:
+		mx, my = mouse.get_pos()	
 
-			mx, my = mouse.get_pos()
+		if e.type == pg.MOUSEBUTTONDOWN:
 
 			if my > Settings.WINDOW_DIMENSION - Settings.DIVISION_HEIGHT - Settings.STATE_RADIUS:
 				return
 
 			if e.button == 1: # Select State
-				self._select_state(mouse)
+				self.dfa.select_state(mx, my)
 			elif e.button == 3: # Create State
 				point = Point(mx, my)
 				state = State(point)
@@ -99,20 +143,11 @@ class Controller:
 
 		elif e.type == pg.MOUSEMOTION and self.drag and mouse.get_pressed()[0]:
 
-			self._move_selected_state(mouse)
+			self.dfa.update_selected_state_point(mx, my)
 
 		elif e.type == pg.MOUSEBUTTONUP:
 
 			self.drag = False
-
-	def _select_state(self, mouse):
-
-		mx, my = mouse.get_pos()
-		self.dfa.select_state(mx, my)
-
-	def _move_selected_state(self, mouse):
-		mx, my = mouse.get_pos()
-		self.dfa.update_selected_state_point(mx, my)
 
 	def handle(self, e, key, mouse):
 

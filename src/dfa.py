@@ -23,8 +23,9 @@ class DFA(Observable):
 		
 		# Sort based on value
 		self.states = sorted(self.states, key=lambda s: s.value)
-		
-		self.start_state = self.states[0]
+
+		if len(self.states) == 1: # This is the first state added
+			self.start_state = state
 
 		self.notify_observers()
 
@@ -154,6 +155,22 @@ class DFA(Observable):
 
 		self.notify_observers()
 		
+
+	def set_start(self):
+
+		if self.selected_state:
+			self.start_state = self.selected_state
+
+	def check_valid(self):
+
+		valid = False
+
+		return valid
+
+
 	def parse_string(self, string):
 
-		self.parsed_string = string
+		if string:
+			self.parsed_string = string
+
+			print("Parsing:", string)

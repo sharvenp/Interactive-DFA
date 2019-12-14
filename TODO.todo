@@ -19,6 +19,7 @@
     ✔ 2.4 Select an edge and press a symbol to re-label it to the pressed symbol @done (19-12-09 14:03)
     ✔ 2.5 Select and edge and press delete to delete it @done (19-12-11 22:56)
     ✔ 2.6 When deleting a State, delete edges appropriately. @done (19-12-11 22:48)
+    ✔ 2.7 Create start state arrow @done (19-12-14 16:17)
 
  ☐ 3.0 Implement parse tracing
 
@@ -32,4 +33,4 @@
 
  ☐ 5.0 Implement Undo functionality
 
- ☐ 6.0 Redefine controls to make it intuitive
+ ✔ 6.0 Redefine controls to make it intuitive @done (19-12-14 16:17)

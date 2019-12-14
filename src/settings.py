@@ -10,6 +10,7 @@ class Settings:
 	BACKGROUND_COLOR = (0, 0, 0)
 	STATE_COLOR = (255, 255, 255)
 	SELECTED_COLOR = (120, 255, 120)
+	PARSE_COLOR = (255, 110, 110)
 	EDGE_COLOR = (255, 255, 255)
 
 	# Fonts
@@ -27,4 +28,14 @@ class Settings:
 	EDGE_DEFAULT_BEND = 20
 	ARROW_WIDTH = 10
 	ARROW_HEIGHT = 8
+	START_ARROW_LENGTH = 75
 	BEND_DELTA = 10
+
+	# Controls
+	KEY_EXIT = pg.K_x
+	KEY_ACCEPTING = pg.K_a
+	KEY_SAVE = pg.K_s
+	KEY_LOAD = pg.K_d
+	KEY_UNDO = pg.K_z
+	KEY_SET_START = pg.K_q
+	KEY_INPUT_STRING = pg.K_w
