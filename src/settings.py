@@ -17,7 +17,6 @@ class Settings:
 	DFA_FONT = ('Consolas', 22)
 	SYMBOL_FONT = ('Consolas', 19)
 	INPUT_FONT = ('Consolas', 20)
-	PARSE_FONT = ('Consolas', 30)
 
 	# State Parameters
 	STATE_RADIUS = 40
@@ -33,7 +32,7 @@ class Settings:
 	BEND_DELTA = 10
 
 	# Parse Parameters
-	PARSE_DELAY = 0.8 # seconds
+	PARSE_DELAY = 0.5 # seconds
 
 	# Controls
 	KEY_EXIT = pg.K_x

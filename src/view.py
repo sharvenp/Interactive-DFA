@@ -164,10 +164,13 @@ class View(Observer):
 
 		# If DFA is parsing, draw the parsing text
 		if dfa.is_parsing:
-			font = pg.font.SysFont(Settings.PARSE_FONT[0], Settings.PARSE_FONT[1])
+
+			font_size = Settings.WINDOW_DIMENSION // len(dfa.parsed_string)
+			font = pg.font.SysFont('Consolas', font_size)
 			characters = []
 			for i, c in enumerate(dfa.parsed_string):
-				s = " " * i + c
+				# s = " " * i + c
+				s=c
 				color = Settings.STATE_COLOR
 
 				if dfa.curr_index == i:
@@ -176,11 +179,8 @@ class View(Observer):
 				s_image = font.render(s, True, color)
 				characters.append(s_image)
 
-			x_offset = (Settings.WINDOW_DIMENSION - abs((len(dfa.parsed_string) - 1) * Settings.PARSE_FONT[1])) // 2
-
 			for i in range(len(characters)):
-				self.screen.blit(characters[i], ((i * Settings.PARSE_FONT[1]), Settings.WINDOW_DIMENSION - Settings.DIVISION_HEIGHT + 20, \
-					 							 Settings.PARSE_FONT[1], Settings.WINDOW_DIMENSION - Settings.DIVISION_HEIGHT))
+				self.screen.blit(characters[i], (i * font_size, Settings.WINDOW_DIMENSION - (Settings.DIVISION_HEIGHT // 2) - (font_size // 2), font_size, font_size))
 
 
 
