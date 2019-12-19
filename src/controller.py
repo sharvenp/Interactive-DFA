@@ -30,13 +30,13 @@ class Controller:
 
 		root = Tk()
 		root.withdraw()		
-		root.filename = filedialog.askopenfilename(title = "Save DFA", defaultextension=".idfa", filetypes = (("DFA models","*.idfa"),))
+		root.filename = filedialog.asksaveasfilename(title = "Save DFA", defaultextension=".idfa", filetypes = (("DFA models","*.idfa"),))
 		path = root.filename
 		root.destroy()
 
-		self.dfa.save(path)
-
-		print("Saved to", path)
+		if path:
+			self.dfa.save(path)
+			print("Saved to", path)
 
 
 	def _load(self):
@@ -48,9 +48,10 @@ class Controller:
 		path = root.filename
 		root.destroy()
 
-		self.dfa.load(path)
+		if path:
+			self.dfa.load(path)
+			print("Loaded from", path)
 
-		print("Loaded from", path)
 
 	def _error(self, error_code):
 
@@ -154,9 +155,7 @@ class Controller:
 			if e.button == 1: # Select State
 				self.dfa.select_state(mx, my)
 			elif e.button == 3: # Create State
-				point = Point(mx, my)
-				state = State(point)
-				self.dfa.add_state(state)
+				self.dfa.add_state(mx, my)
 			elif e.button == 4: # Increase Edge Bend
 				self.dfa.update_bend(mx, my, 1)
 			elif e.button == 5: # Decrease Edge Bend

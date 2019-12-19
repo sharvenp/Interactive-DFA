@@ -2,8 +2,10 @@
 from observable import Observable
 from settings import Settings
 from point import Point
+from state import State
 
 import math as m
+import re
 
 class DFA(Observable):
 
@@ -21,7 +23,11 @@ class DFA(Observable):
 		self.curr_state = None
 		self.is_parsing = False
 
-	def add_state(self, state):
+	def add_state(self, mx, my):
+
+		point = Point(mx, my)
+		state = State(point)	
+		
 		self.states.append(state)
 		
 		# Sort based on value
@@ -264,14 +270,66 @@ class DFA(Observable):
 
 		with open(path, 'w') as file:
 			for state in self.states:
-				file.write(str(state)+"\n")
+				file.write("!s!"+str(state)+"&"*(state == self.start_state)+"\n")
 			for transition in self.transition_table:
-				file.write(str(transition).replace(" ", "").replace("(", "").replace(")","")+"\n")
+				fr, s, to, bend = transition
+				symbol_string = ''.join(str(c) for c in s)
+				s = f"!{fr.value}!"+symbol_string+f"!{to.value}!{bend}!\n"
+				file.write(s)
 
 	def load(self, path):
 
 		with open(path, 'r') as file:
 			
-			for line in file:
-				
+			self.states = []
+			self.transition_table = []
+			self.start_state = None
+			self.selected_state = None
 
+			lines =  [line.rstrip('\n') for line in file]
+
+			for line in lines:
+
+				print("Parsing line:", line)
+
+				m1 = re.match(r"^!s!q(\d+)(\*?)@\((\d+),(\d+)\)(&?)$", line)
+				m2 = re.match(r"^!(\d+)!(.+)!(\d+)!(\d+)!$", line)				
+
+				if m1: # This is a state
+
+					value = int(m1.group(1))
+					is_accepting = m1.group(2) == "*"
+					point = Point(int(m1.group(3)), int(m1.group(4)))
+					s = State(point)
+					s.value = value
+					s.is_accepting = is_accepting
+
+					self.states.append(s)
+
+					print("Parsed state:", s)
+
+					if m1.group(5) == "&":
+						self.start_state = s
+
+
+				elif m2: # This is a transition
+
+					fr_value = int(m2.group(1))
+					symbols = m2.group(2)
+					to_value = int(m2.group(3))
+					bend_value = int(m2.group(4))
+
+					fr = None
+					to = None
+					for state in self.states:
+						if state.value == fr_value:
+							fr = state
+						if state.value == to_value:
+							to = state
+
+					transition = (fr, list(symbols), to, bend_value)
+					self.transition_table.append(transition)
+
+					print("Parsed transition:", str(transition))
+
+		self.notify_observers()
