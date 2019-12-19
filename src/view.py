@@ -14,6 +14,7 @@ class View(Observer):
 	def __init__(self):
 
 		pg.init()
+		self.i = 0
 
 	def attach_controller(self, controller):
 		self.controller = controller
@@ -190,6 +191,8 @@ class View(Observer):
 
 		if dfa.is_parsing:
 			t.sleep(Settings.PARSE_DELAY)
+			pg.image.save(self.screen, f"{self.i+1}.png")
+			self.i += 1
 
 
 	def launch(self):
