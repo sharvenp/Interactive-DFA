@@ -88,10 +88,6 @@ class Controller:
 		
 		if e.type == pg.KEYDOWN:
 
-			if keys[pg.K_ESCAPE]: # Quit
-				quit(0)
-
-
 			if keys[pg.K_LCTRL] or keys[pg.K_RCTRL]: # Ctrl key pressed
 
 				if keys[Settings.KEY_EXIT]:
