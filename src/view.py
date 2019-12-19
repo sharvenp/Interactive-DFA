@@ -7,6 +7,7 @@ from settings import Settings
 
 import pygame as pg
 import math as m
+import time as t
 
 class View(Observer):
 
@@ -134,6 +135,9 @@ class View(Observer):
 			if state == dfa.selected_state:
 				color = Settings.SELECTED_COLOR
 
+			if dfa.is_parsing and state == dfa.curr_state:
+				color = Settings.PARSE_COLOR
+
 			# Draw circle
 			pg.draw.circle(self.screen, color, (x, y), Settings.STATE_RADIUS)
 			pg.draw.circle(self.screen, Settings.BACKGROUND_COLOR, (x, y), Settings.STATE_RADIUS - Settings.STATE_THICKNESS)
@@ -158,10 +162,38 @@ class View(Observer):
 					(Settings.WINDOW_DIMENSION, Settings.WINDOW_DIMENSION - Settings.DIVISION_HEIGHT))
 
 
+		# If DFA is parsing, draw the parsing text
+		if dfa.is_parsing:
+			font = pg.font.SysFont(Settings.PARSE_FONT[0], Settings.PARSE_FONT[1])
+			characters = []
+			for i, c in enumerate(dfa.parsed_string):
+				s = " " * i + c
+				color = Settings.STATE_COLOR
+
+				if dfa.curr_index == i:
+					color = Settings.PARSE_COLOR
+
+				s_image = font.render(s, True, color)
+				characters.append(s_image)
+
+			x_offset = (Settings.WINDOW_DIMENSION - abs((len(dfa.parsed_string) - 1) * Settings.PARSE_FONT[1])) // 2
+
+			for i in range(len(characters)):
+				self.screen.blit(characters[i], ((i * Settings.PARSE_FONT[1]), Settings.WINDOW_DIMENSION - Settings.DIVISION_HEIGHT + 20, \
+					 							 Settings.PARSE_FONT[1], Settings.WINDOW_DIMENSION - Settings.DIVISION_HEIGHT))
+
+
+
+
 
 	def update(self, dfa):
+
 		self._render_DFA(dfa)
 		pg.display.update()
+
+		if dfa.is_parsing:
+			t.sleep(Settings.PARSE_DELAY)
+
 
 	def launch(self):
 

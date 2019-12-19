@@ -1,0 +1,14 @@
+Error Code 0:
+The DFA drawn is not a valid dfa. Consider checking the states and the transitions to ensure that it is in a valid form.
+
+Error Code 1:
+String contains alphabets that are not defined in the set of alphabets. It is also possible that the DFA has transitions on symbols which are not defined in the alphabet.
+
+Error Code 2:
+The states in the DFA do not have transitions for all the alphabets in the given alphabet. Check your state transitions and whether the given alphabet is a sequence of symbols with no spaces (must contain no other characters other than the transition symbols).
+
+Error Code 3:
+A state has multiple transitions for the same symbol. Please note that this app allows DFA's to be drawn and not NFA's.
+
+Error Code 4:
+There are no accepting states.

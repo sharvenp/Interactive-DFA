@@ -24,7 +24,7 @@
  ☐ 3.0 Implement parse tracing
 
      ✔ 3.1 Implement text field @done (19-12-12 18:52)
-     ☐ 3.2 Input a string and display the state activations of the string
+     ✔ 3.2 Input a string and display the state activations of the string @done (19-12-19 00:38)
 
  ☐ 4.0 Save/Load
 

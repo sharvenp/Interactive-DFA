@@ -16,7 +16,10 @@ class DFA(Observable):
 		self.start_state = None
 		self.selected_state = None
 
-		self.parsed_string = ''
+		self.parsed_string = ""
+		self.curr_index = 0
+		self.curr_state = None
+		self.is_parsing = False
 
 	def add_state(self, state):
 		self.states.append(state)
@@ -92,8 +95,6 @@ class DFA(Observable):
 
 			k += 1 * int(not found_transition)
 
-
-		self.selected_state = None
 		
 		# Remove selected state from states
 		removed_state = self.states.pop(i)
@@ -104,7 +105,14 @@ class DFA(Observable):
 		del deleted_transitions[:]
 
 		self.states = sorted(self.states, key=lambda s: s.value)
-		self.start_state = self.states[0]
+
+		if self.start_state == self.selected_state:
+			if self.states:
+				self.start_state = self.states[0]
+			else:
+				self.start_state = None
+			
+		self.selected_state = None
 
 		self.notify_observers()
 
@@ -161,16 +169,92 @@ class DFA(Observable):
 		if self.selected_state:
 			self.start_state = self.selected_state
 
-	def check_valid(self):
+			self.notify_observers()
 
-		valid = False
+	def check_unique(self):
 
-		return valid
+		if not self.states or not self.transition_table:
+			# DFA is empty
+			return False
+
+		# Check if states are unique
+		for i in range(len(self.states)):
+			for j in range(i+1, len(self.states)):
+				if self.states[i].value == self.states[j].value:
+					# Duplicate State
+					return False
+
+		return True
 
 
-	def parse_string(self, string):
+	def _transition(self, curr_state, symbol):
 
-		if string:
-			self.parsed_string = string
+		for transition in self.transition_table:
+			fr, s, to, bend = transition
+			if fr == curr_state and symbol in s:
+				return to			
 
-			print("Parsing:", string)
+	def parse_string(self, alphabet, string):
+
+		self.parsed_string = string
+		print("Parsing:", string, "with Alphabet:", list(set(alphabet)))
+
+		# Check if string/DFA uses only the given alphabets
+		symbols_used = []
+		for transition in self.transition_table:
+			symbols_used.extend(transition[1])
+
+		symbols_used = list(set(symbols_used))
+
+		if symbols_used != list(set(alphabet)):
+			return 1;
+
+		for c in string:
+			if c not in alphabet:
+				return 1
+
+		# Check if there is atleast one accepting state
+		found_accepting = False
+		for state in self.states:
+			if state.is_accepting:
+				found_accepting = True
+				break
+
+		if not found_accepting:
+			return 4
+
+		# Check if all states have transitions defined for all the alphabets
+		transition_dictionary = {}
+		for state in self.states:
+			transition_dictionary[state] = []
+
+		for transition in self.transition_table:
+			fr, s, to, bend = transition
+			for c in s:
+				if c in transition_dictionary[fr]:
+					return 3
+				transition_dictionary[fr].append(c)
+
+		list_alphabet = list(set(alphabet))
+		list_alphabet.sort()
+		for key in transition_dictionary:
+			transition_dictionary[key].sort()
+			if transition_dictionary[key] != list_alphabet:
+				return 2
+
+		# === DFA should be valid at this point === #
+		self.curr_state = self.start_state
+		
+		self.is_parsing = True
+		
+		for i in range(len(self.parsed_string)):
+			self.curr_index = i
+			self.curr_state = self._transition(self.curr_state, self.parsed_string[i])		
+			self.notify_observers()
+		
+		self.is_parsing = False
+
+		if self.curr_state.is_accepting:
+			return -1
+		else:
+			return -2
