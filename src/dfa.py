@@ -258,3 +258,20 @@ class DFA(Observable):
 			return -1
 		else:
 			return -2
+
+
+	def save(self, path):
+
+		with open(path, 'w') as file:
+			for state in self.states:
+				file.write(str(state)+"\n")
+			for transition in self.transition_table:
+				file.write(str(transition).replace(" ", "").replace("(", "").replace(")","")+"\n")
+
+	def load(self, path):
+
+		with open(path, 'r') as file:
+			
+			for line in file:
+				
+

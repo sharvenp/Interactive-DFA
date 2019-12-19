@@ -6,6 +6,7 @@ from settings import Settings
 
 import math as m
 from tkinter import messagebox
+from tkinter import filedialog
 from tkinter import *
 from pymsgbox import *
 
@@ -27,8 +28,29 @@ class Controller:
 	def _save(self):
 		print("Save Command")
 
+		root = Tk()
+		root.withdraw()		
+		root.filename = filedialog.askopenfilename(title = "Save DFA", defaultextension=".idfa", filetypes = (("DFA models","*.idfa"),))
+		path = root.filename
+		root.destroy()
+
+		self.dfa.save(path)
+
+		print("Saved to", path)
+
+
 	def _load(self):
 		print("Load Command")
+
+		root = Tk()
+		root.withdraw()		
+		root.filename = filedialog.askopenfilename(title = "Load DFA", defaultextension=".idfa", filetypes = (("DFA models","*.idfa"),))
+		path = root.filename
+		root.destroy()
+
+		self.dfa.load(path)
+
+		print("Loaded from", path)
 
 	def _error(self, error_code):
 

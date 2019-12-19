@@ -28,7 +28,7 @@
 
  ☐ 4.0 Save/Load
 
-     ☐ 4.1 Save a dfa
+     ✔ 4.1 Save a dfa @done (19-12-19 13:11)
      ☐ 4.2 Load a dfa
 
  ☐ 5.0 Implement Undo functionality

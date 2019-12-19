@@ -183,9 +183,6 @@ class View(Observer):
 				self.screen.blit(characters[i], (i * font_size, Settings.WINDOW_DIMENSION - (Settings.DIVISION_HEIGHT // 2) - (font_size // 2), font_size, font_size))
 
 
-
-
-
 	def update(self, dfa):
 
 		self._render_DFA(dfa)
