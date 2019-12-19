@@ -40,6 +40,5 @@ class Settings:
 	KEY_ACCEPTING = pg.K_a
 	KEY_SAVE = pg.K_s
 	KEY_LOAD = pg.K_d
-	KEY_UNDO = pg.K_z
 	KEY_SET_START = pg.K_q
 	KEY_INPUT_STRING = pg.K_w
