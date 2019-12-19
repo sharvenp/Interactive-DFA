@@ -26,11 +26,11 @@
      ✔ 3.1 Implement text field @done (19-12-12 18:52)
      ✔ 3.2 Input a string and display the state activations of the string @done (19-12-19 00:38)
 
- ☐ 4.0 Save/Load
+ ✔ 4.0 Save/Load @done (19-12-19 15:33)
 
      ✔ 4.1 Save a dfa @done (19-12-19 13:11)
      ✔ 4.2 Load a dfa @done (19-12-19 15:29)
 
- ☐ 5.0 Implement Undo functionality
+ ✘ 5.0 Implement Undo functionality @cancelled (19-12-19 15:33)
 
  ✔ 6.0 Redefine controls to make it intuitive @done (19-12-14 16:17)
