@@ -14,6 +14,7 @@ class Settings:
 	EDGE_COLOR = (255, 255, 255)
 
 	# Fonts
+	# (Font Face, Font Size)
 	DFA_FONT = ('Consolas', 22)
 	SYMBOL_FONT = ('Consolas', 19)
 	INPUT_FONT = ('Consolas', 20)

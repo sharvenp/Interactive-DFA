@@ -22,9 +22,6 @@ class Controller:
 	def set_model(self, dfa):
 		self.dfa = dfa
 
-	def _undo(self):
-		print("Undo Command")
-
 	def _save(self):
 		print("Save Command")
 
@@ -105,9 +102,6 @@ class Controller:
 
 				elif keys[Settings.KEY_SET_START]: # Set start state
 					self.dfa.set_start()
-
-				elif keys[Settings.KEY_UNDO]: # Undo last command
-					self._undo()
 
 				elif keys[Settings.KEY_SAVE]: # Save dfa
 					self._save()
