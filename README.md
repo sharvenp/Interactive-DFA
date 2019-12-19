@@ -64,3 +64,11 @@ This is a sample DFA parsing the string "1000011110101001100" with alphabet "10"
 <p align="center">
   <img width="800" height="800" src="readme/parsing.gif">
 </p>
+
+#### Settings ####
+All the GUI settings such as the colors, fonts, and other parameters can be modifed in the `src/settings.py` class.
+
+# Dependencies #
+- [PyGame](https://www.pygame.org/wiki/GettingStarted)
+- [TkInter](https://tkdocs.com/tutorial/install.html)
+- [PyMsgBox](https://pypi.org/project/PyMsgBox/)
