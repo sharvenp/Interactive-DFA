@@ -59,11 +59,15 @@ For the following prompt, enter the string that the DFA should parse. The string
   <img width="400" height="160" src="readme/string.PNG">
 </p>
 
+---
+
 This is a sample DFA parsing the string "1000011110101001100" with alphabet "10":
 
 <p align="center">
   <img width="800" height="800" src="readme/parsing.gif">
 </p>
+
+After parsing, the application will diplay a pop-up saying if the DFA accepts the string or not.
 
 #### Settings ####
 All the GUI settings such as the colors, fonts, and other parameters can be modifed in the `src/settings.py` class.
